@@ -5,9 +5,11 @@ import { createServer } from 'http';
 import compression from 'compression';
 import cors from 'cors';
 import schema from './schema';
+import { LoginModule } from './Modules/Login/login.module';
 const app = express();
 const server = new ApolloServer({
-  schema,
+  modules: [LoginModule],
+  context: ({ req, res }) => ({ req, res }),
   validationRules: [depthLimit(7)],
 });
 app.use('*', cors());
