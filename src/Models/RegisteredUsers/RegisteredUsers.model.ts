@@ -14,10 +14,12 @@ const RegisteredUsersSchema: Schema = new Schema({
     role: { type: String, enum: Constants.ROLE, required: true },
     avatar: {type: String },
     itemsAdded: {type: Array },
-    itemsPicked: {type: Array}
+    itemsPicked: {type: Array},
+    isActive: {trype: Boolean}
 }, {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    timestamps: true
 });
 
 

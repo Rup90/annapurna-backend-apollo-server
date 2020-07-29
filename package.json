@@ -28,7 +28,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.26",
     "ncp": "^2.0.0",
-    "type-graphql": "^1.0.0-rc.3"
+    "type-graphql": "^1.0.0-rc.3",
+    "@hapi/joi": "^17.1.1",
+    "consola": "^2.14.0",
+    "core-util-is": "^1.0.2"
   },
   "devDependencies": {
     "@types/compression": "^1.7.0",

@@ -1,9 +1,17 @@
 import mongoose from 'mongoose';
 
-export default class Db {
-    private mongoDb: string = 'YYYYY';
+const config = require('./config');
 
-    static async setupDb(db: Db): Promise<any> {
-        return await mongoose.connect(db.mongoDb, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+ 
+
+export default class Db {    
+
+    static async setupDb(db: Db): Promise<any> {  
+
+        console.log(config.DB);      
+
+        return await mongoose.connect(config.DB, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
+
     }
+
 }
