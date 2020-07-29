@@ -17,30 +17,21 @@ import { registerValidate } from '../../validators/user';
 import consola from 'consola';
 
  
-
 const generateToken = async (user: typeof RegistrationSuccessResponse) => {    
 
-    const token =  await jwt.sign(
-
-      {
+    const token =  await jwt.sign({
 
         id: user.id,
 
         email: user.email
 
       },
-
       config.APP_SECRET,
-
       { expiresIn: '1h' }
 
     );
 
- 
-
-    const refreshToken = await jwt.sign(
-
-        {
+    const refreshToken = await jwt.sign({
 
           id: user.id,
 
@@ -49,7 +40,6 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
         },
 
         config.APP_REFRESH_SECRET,
-
         { expiresIn: '7d' }
 
     );
@@ -58,36 +48,19 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
   }
 
- 
-
   export default  {
 
     Mutation: {
 
-        async register(
-
-            _: any, 
-
-            args: any,            
-
-            context: any, 
-
-            info: any
-
-        )  {          
-
-            console.log(args, config.APP_SECRET)  ;
+        async register( _: any, args: any, context: any, info: any)  {          
 
             // validate user data
 
-            const validationResponse = await registerValidate.validate(args, {abortEarly: false});
-
-            
+            const validationResponse = await registerValidate.validate(args.userInput, {abortEarly: false});
 
             if (validationResponse && validationResponse.error) {
 
                 // consola is elegant console logger for Node.js
-
                 consola.error({
 
                     message: `validation error \n${validationResponse.error}`,
@@ -95,7 +68,6 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
                     badge: true
 
                 })
-
                 // return failure response
 
                 return {
@@ -114,23 +86,20 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
             } else {
 
+                const { firstName, lastName, email, password, role, quantity, pickupDate, pickupTime } = args.userInput;
+
                 // check if the user already exists with the same email in DB
 
-                const doExists = await RegisteredUserModel.findOne({ email: args.email });
-
-                                
+                const doExists = await RegisteredUserModel.findOne({ email: email });
 
                 if (doExists) {
 
-                    
-
                 // return failure response
-
                     return {
 
                         __typename: 'RegistrationFailureResponse',
 
-                        statusCode: 400,
+                        statusCode: 422,
 
                         response: {
 
@@ -142,25 +111,21 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
                 }
 
- 
-
                 // hash password
 
-                const password = await bcrypt.hash(args.password, saltRounds);
-
- 
+                const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
                 const newUser = {
 
-                    firstName: args.firstName,
+                    firstName: firstName,
 
-                    lastName: args.lastName,
+                    lastName: lastName,
 
-                    email: args.email,
+                    email: email,
 
-                    password,
+                    encryptedPassword,
 
-                    role: args.role,
+                    role: role,
 
                     isActive: 1,
 
@@ -176,19 +141,13 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
                 };
 
- 
-
                 // save data
 
                 const response = await new RegisteredUserModel(newUser).save();
 
- 
-
                 // generate token and refresh token
 
                 const tokens = generateToken(response);
-
- 
 
                 // return success response
 

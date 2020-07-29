@@ -14,6 +14,8 @@ import Db from './db';
 
 import { LoginModule } from './Modules/Login/login.module';
 
+import { UserOperationModule } from './Modules/UserOperations/user-operations.module';
+
 import consola from 'consola';
 
 import { RegistrationModule } from './Modules/Registration/registration.module';
@@ -36,7 +38,9 @@ const config = require('./config');
 
       LoginModule,
 
-      RegistrationModule
+      RegistrationModule,
+
+      UserOperationModule
 
     ],
 

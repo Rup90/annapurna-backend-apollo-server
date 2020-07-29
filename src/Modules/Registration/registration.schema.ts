@@ -6,27 +6,12 @@ const typeDefs = gql`
 
     type Mutation {
 
-        register(
-
-            firstName: String!
-
-            lastName: String!
-
-            email: String!
-
-            password: String!
-
-            role: String!
-
-        ): RegistrationResponse
-
+        register(userInput: RegisterInput): RegistrationResponse
     }
 
  
 
     union RegistrationResponse = RegistrationSuccessResponse | RegistrationFailureResponse
-
- 
 
     type RegistrationSuccessResponse {
 
@@ -36,8 +21,6 @@ const typeDefs = gql`
 
     }
 
- 
-
     type RegistrationFailureResponse {
 
         statusCode: Int!
@@ -46,7 +29,6 @@ const typeDefs = gql`
 
     }
 
- 
 
     type RegistrationSuccessRes {
 
@@ -64,15 +46,11 @@ const typeDefs = gql`
 
     }
 
- 
-
     type RegistrationFailureRes {
 
         message: String!
 
     }
-
- 
 
     input RegisterInput {
 
