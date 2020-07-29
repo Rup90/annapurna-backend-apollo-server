@@ -4,6 +4,8 @@ import { ApolloServer } from 'apollo-server-express';
 
 import depthLimit from 'graphql-depth-limit';
 
+import "reflect-metadata";
+
 import { createServer } from 'http';
 
 import compression from 'compression';
