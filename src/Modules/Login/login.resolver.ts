@@ -5,16 +5,14 @@ import RegisteredUserModel from '../../Models/RegisteredUsers/RegisteredUsers.mo
 export default {
     Query: {
         login: async (parent: any, args: any, context: any, info: any) => {
-            let message;
             const response = await RegisteredUserModel.findOne({ email: args.email });
             if (response) {
                 const isEqual = await compare(args.password, response.password);
-                console.log('isEqual ==>', isEqual);
                 if (isEqual) {
                     const token = sign ({
-                                            user_id: response.id,
-                                            role: response.role
-                                        },
+                                        user_id: response.id,
+                                        role: response.role
+                                    },
                                         Constants.JWT_PRIVATE_KEY,
                                         { expiresIn: 60 * 60 }
                                     );
