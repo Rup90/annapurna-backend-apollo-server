@@ -25,6 +25,7 @@
     "consola": "^2.14.0",
     "core-util-is": "^1.0.2",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "graphql-subscriptions": "^1.1.0",
@@ -34,7 +35,9 @@
     "ncp": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "subscriptions-transport-ws": "^0.9.17",
-    "type-graphql": "^1.0.0-rc.3"
+    "type-graphql": "^1.0.0-rc.3",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
     "@types/compression": "^1.7.0",

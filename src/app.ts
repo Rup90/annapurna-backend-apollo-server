@@ -1,5 +1,7 @@
 import express from 'express';
 
+require('dotenv').config();
+
 import { ApolloServer } from 'apollo-server-express';
 
 import depthLimit from 'graphql-depth-limit';
@@ -22,9 +24,10 @@ import consola from 'consola';
 
 import { RegistrationModule } from './Modules/Registration/registration.module';
 
+import  logger  from './utils/logger';
+
 const config = require('./config');
 
- 
 
   // initialize the app
 
@@ -54,8 +57,6 @@ const config = require('./config');
 
       onConnect: (connectionParams, webSocket, context) => {
 
-        console.log(context);
-        
       },
       onDisconnect: (webSocket, context) => {
         // ...
@@ -78,17 +79,11 @@ const config = require('./config');
 
     server.installSubscriptionHandlers(httpServer);
 
-    httpServer.listen({ port: config.APP_PORT },
+    httpServer.listen({ port: process.env.PORT },
 
       (): void => {
 
-        consola.success({
-
-          message: `\n🚀GraphQL is now running on http://localhost:${config.APP_PORT}/graphql`,
-
-          badge: true
-
-        });
+        logger.log('info', `Express server listening on port ${process.env.PORT}`);
 
       });
 
