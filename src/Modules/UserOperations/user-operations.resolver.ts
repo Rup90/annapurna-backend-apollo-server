@@ -53,7 +53,7 @@ export default {
 
         updatetProduct: async (parent: any, args: any, context: any, info: any) => {
             const {
-                itemName, category, pricePerKg, location,
+                itemName, category, pricePerKg, location, id, 
                 productId, quantity, pickupDate, pickupTime, adminComment
             } = args.itemDetails;
             console.log(adminComment);
@@ -84,6 +84,31 @@ export default {
                 __typename: 'UpdateResponse',
                 statusCode: 200,
                 response: "Item updated successfully"
+            }
+        },
+
+        deletetProduct: async (parent: any, args: any, context: any, info: any) => {
+            try {
+
+                const user: any = await RegisteredUserModel.updateOne({ _id: context.user_id }, { $pull: { itemsAdded: { productId: args.itemDetails.productId } }}, 
+                { safe: true, multi:true }, function(err, obj) {
+                    //do something smart
+                });
+                console.log(user);
+                return {
+                        __typename: 'DeleteResponse',
+                        statusCode: 200,
+                        response: "Item deleted successfully"
+                    }
+                
+            } catch (error) {
+                console.log('err0r =>', error);
+                return {
+                    __typename: 'DeleteResponse',
+                    statusCode: 422,
+                    response: "Something is wrong. Please try again."
+                }
+                
             }
         }
 

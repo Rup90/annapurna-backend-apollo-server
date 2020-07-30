@@ -4,6 +4,7 @@ const typeDefs = gql`
     extend type Mutation {
         saveProduct(itemDetails: ItemDetails): ProductSaveResponse!
         updatetProduct(itemDetails: UpdateItemDetails) : UpdateResponse!
+        deletetProduct(itemDetails: DeleteItemDetails): DeleteResponse!
     }
 
     input ItemDetails {
@@ -46,10 +47,20 @@ const typeDefs = gql`
         pickupTime: String
         adminComment: String
         userComment: String
+        id: String
     }
 
     type UpdateResponse {
         statusCode: Int
+        response: String
+    }
+
+    input DeleteItemDetails {
+        productId: String
+    }
+
+    type DeleteResponse {
+        statusCode: Int!
         response: String
     }
 
