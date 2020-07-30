@@ -93,7 +93,8 @@ export default {
         itemAdded: {
           // Additional event labels can be passed to asyncIterator creation
           subscribe: async (parent: any, args: any, context: any, info: any) => {
-            pubsub.asyncIterator([NotificationType.AddItems])
+            const asyncIterator = pubsub.asyncIterator([NotificationType.AddItems]);
+            return asyncIterator;
           }
         }
       }

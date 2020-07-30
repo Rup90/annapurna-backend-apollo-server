@@ -50,6 +50,18 @@ const config = require('./config');
 
     validationRules: [depthLimit(7)],
 
+    subscriptions: {
+
+      onConnect: (connectionParams, webSocket, context) => {
+
+        console.log(context);
+        
+      },
+      onDisconnect: (webSocket, context) => {
+        // ...
+      },
+    },
+
   });
 
   app.use('*', cors());
@@ -63,6 +75,8 @@ const config = require('./config');
   Db.setupDb(new Db()).then(() => {
 
     const httpServer = createServer(app);
+
+    server.installSubscriptionHandlers(httpServer);
 
     httpServer.listen({ port: config.APP_PORT },
 
