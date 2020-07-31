@@ -24,9 +24,12 @@ import { UserOperationModule } from './Modules/UserOperations/user-operations.mo
 
 import { CommonOperationModule } from './Modules/CommonOperations/common-operations.module';
 
+import { AdminOperationModule } from './Modules/AdminOperations/admin-operations.module';
+
 import consola from 'consola';
 
 import  logger  from './utils/logger';
+
 
 const config = require('./config');
 
@@ -49,7 +52,9 @@ const config = require('./config');
 
       UserOperationModule,
 
-      CommonOperationModule
+      CommonOperationModule,
+
+      AdminOperationModule
 
     ],
 
