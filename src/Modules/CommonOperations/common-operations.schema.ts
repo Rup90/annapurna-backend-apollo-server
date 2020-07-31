@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server';
-
+import { Upload } from './common-operations.interface';
 const typedefs = gql`
 
     extend type Query {
@@ -27,6 +27,17 @@ const typedefs = gql`
         category: String
         itemImage: String
         id: String
+    }
+
+    scalar Upload
+
+    extend type Mutation {
+        addAvatarImage(name: String!, file: Upload!): AvatarUploadResponse
+    }
+
+    type AvatarUploadResponse {
+        statusCode: Int
+        avatar: String
     }
 `;
 

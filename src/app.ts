@@ -72,6 +72,11 @@ const config = require('./config');
       },
     },
 
+    uploads: {
+      maxFileSize: 10000000, // 10 MB
+      maxFiles: 20
+    }
+
   });
 
   app.use('*', cors());
