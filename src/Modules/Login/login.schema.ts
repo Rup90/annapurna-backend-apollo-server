@@ -21,6 +21,7 @@ const typeDefs = gql`
         user_id: String!
         role: String!
         token: String!
+        refreshToken: String!
         expiresIn: Int!
     }
 

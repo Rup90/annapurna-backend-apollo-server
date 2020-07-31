@@ -20,17 +20,16 @@ import { LoginModule } from './Modules/Login/login.module';
 
 import { RegistrationModule } from './Modules/Registration/registration.module';
 
-import { UserOperationModule } from './Modules/UserOperations/user-operations.module';
-
 import { CommonOperationModule } from './Modules/CommonOperations/common-operations.module';
 
 import { AdminOperationModule } from './Modules/AdminOperations/admin-operations.module';
+import { AuthenticationModule } from './Modules/Authentication/authentication.module';
+
 
 import consola from 'consola';
 
 import  logger  from './utils/logger';
-
-
+const isAuth = require('./middleware/authenticationGuard');
 const config = require('./config');
 
 
@@ -38,7 +37,8 @@ const config = require('./config');
 
   const app = express();
 
-  
+  // check JWT token [Middleware]
+  app.use(isAuth); 
 
   // starting apollo-express-server
 
@@ -50,11 +50,11 @@ const config = require('./config');
 
       RegistrationModule,
 
-      UserOperationModule,
-
       CommonOperationModule,
 
-      AdminOperationModule
+      AdminOperationModule,
+
+      AuthenticationModule
 
     ],
 

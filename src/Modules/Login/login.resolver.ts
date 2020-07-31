@@ -16,11 +16,19 @@ export default {
                                         Constants.JWT_PRIVATE_KEY,
                                         { expiresIn: 60 * 60 }
                                     );
+                    const refreshToken = sign ({
+                                        user_id: response.id,
+                                        role: response.role
+                                    },
+                                        Constants.APP_REFRESH_SECRET,
+                                        { expiresIn: '7d' }
+                                    );
                     return {
                         __typename: 'LoginSuccessResponse',
                         statusCode: 200,
                         response: {
-                            token: token,
+                            token,
+                            refreshToken,
                             role: response.role,
                             user_id: response.id,
                             expiresIn: 60 * 60

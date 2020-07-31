@@ -2,6 +2,8 @@ export default class Constants {
     static JWT_PRIVATE_KEY: string = 'a5116fa8820526c5e88419ac9326ca18';
     static ROLE: string[] = ['ADMIN', 'FARMER'];
     static CATEGORY: string[] = ['AGRICULTURE', 'DAIRY', 'LIVESTOCK'];
+    static readonly APP_SECRET: string = 'Hu986kjo4i9JU342mbcs8765sdafdgm';
+    static readonly APP_REFRESH_SECRET: string = 'Hu986kjo4i9Kg897ys262s8765sdafdgm';
 }
 
 export const enum Role {

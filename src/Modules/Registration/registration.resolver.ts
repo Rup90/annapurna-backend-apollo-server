@@ -15,6 +15,7 @@ import RegisteredUserModel from '../../Models/RegisteredUsers/RegisteredUsers.mo
 import { registerValidate } from '../../validators/user';
 
 import consola from 'consola';
+import Constants from '../../contants/constants';
 
  
 const generateToken = async (user: typeof RegistrationSuccessResponse) => {    
@@ -23,10 +24,10 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
         id: user.id,
 
-        email: user.email
+        email: user.role
 
       },
-      config.APP_SECRET,
+      Constants.APP_SECRET,
       { expiresIn: '1h' }
 
     );
@@ -35,11 +36,11 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
           id: user.id,
 
-          email: user.email
+          email: user.role
 
         },
 
-        config.APP_REFRESH_SECRET,
+        Constants.APP_REFRESH_SECRET,
         { expiresIn: '7d' }
 
     );
@@ -86,7 +87,7 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
             } else {
 
-                const { firstName, lastName, email, password, role, quantity, pickupDate, pickupTime } = args.userInput;
+                const { firstName, lastName, email, password, role } = args.userInput;
 
                 // check if the user already exists with the same email in DB
 
@@ -117,13 +118,13 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
                 const newUser = {
 
-                    firstName: firstName,
+                    firstName,
 
-                    lastName: lastName,
+                    lastName,
 
-                    email: email,
+                    email,
 
-                    encryptedPassword,
+                    password: encryptedPassword,
 
                     role: role,
 
