@@ -2,6 +2,7 @@ import RegisteredUserModel from '../../Models/RegisteredUsers/RegisteredUsers.mo
 import authGuard from '../../middleware/authGuard';
 import { PubSub } from 'graphql-subscriptions';
 import {NotificationType} from '../../contants/constants';
+import FarmarAddedItemListsModel from '../../Models/AdminApprovalProducts/Admin-approval-item.model';
 const pubsub = new PubSub();
 export default {
     Mutation: {
@@ -10,7 +11,7 @@ export default {
                 itemName, category, pricePerKg, location,
                 productId, quantity, pickupDate, pickupTime
             } = args.itemDetails;
-            // const user  = await RegisteredUserModel.findOne({email: })
+            const user: any  = await RegisteredUserModel.findById({_id: context.user_id })
             const item = {
                 itemName: itemName,
                 category: category,
@@ -32,23 +33,23 @@ export default {
                 user_id: 'String',
                 id: 'String'
             }
+            user['itemsAdded'].push(item);
+            user.save();
+            const notficationPaylod = {
+                ...item,
+                u_id: context.user_id,
+                productId: productId,
+                user_firstName: user.firstName,
+                user_lastName: user.lastName
+            };
+            const farmerItem = new FarmarAddedItemListsModel(notficationPaylod);
+            farmerItem.save();
             pubsub.publish(NotificationType.AddItems, { itemAdded: notificationPayload });
             return {
                 __typename: 'ProductSaveResponse',
                 statusCode: 200,
                 response: "Item added successfully"
             }
-            // user['itemsAdded'].push(item);
-            // user.save();
-            // const notficationPaylod = {
-            //     ...item,
-            //     u_id: ctx.user_id,
-            //     itemId: itemInput.id,
-            //     user_firstName: user.firstName,
-            //     user_lastName: user.lastName
-            // };
-            // const farmerItem = new FarmarAddedItemLists(notficationPaylod);
-            // farmerItem.save();
         },
 
         updatetProduct: async (parent: any, args: any, context: any, info: any) => {
