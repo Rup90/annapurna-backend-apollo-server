@@ -16,7 +16,7 @@ module.exports = (req: AuthGuardRequest, res: Response, next: NextFunction) => {
 
  
 
-    const xToken = <string>req.headers['authentication'];
+    const xToken = <string>req.headers['authorization'];
 
     const xRefreshToken = <string>req.headers['x-refresh-token'];
 

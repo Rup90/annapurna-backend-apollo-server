@@ -13,7 +13,7 @@ export default {
                                         user_id: response.id,
                                         role: response.role
                                     },
-                                        Constants.JWT_PRIVATE_KEY,
+                                        Constants.APP_SECRET,
                                         { expiresIn: 60 * 60 }
                                     );
                     const refreshToken = sign ({

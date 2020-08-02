@@ -11,7 +11,8 @@ export default {
                 itemName, category, pricePerKg, location,
                 productId, quantity, pickupDate, pickupTime
             } = args.itemDetails;
-            const user: any  = await RegisteredUserModel.findById({_id: context.user_id })
+            const { user_id } = info.session.req;
+            const user: any  = await RegisteredUserModel.findById({_id: user_id });
             const item = {
                 itemName: itemName,
                 category: category,
@@ -27,17 +28,17 @@ export default {
             };
 
             const notificationPayload = {
-                itemName: 'String',
-                user_firstName: 'String',
-                user_lastName: 'String',
-                user_id: 'String',
-                id: 'String'
+                itemName: itemName,
+                user_firstName: user.firstName,
+                user_lastName: user.lastName,
+                user_id: user_id,
+                productId: productId
             }
             user['itemsAdded'].push(item);
             user.save();
             const notficationPaylod = {
                 ...item,
-                u_id: context.user_id,
+                u_id: user_id,
                 productId: productId,
                 user_firstName: user.firstName,
                 user_lastName: user.lastName
@@ -128,8 +129,9 @@ export default {
     Query: {
 
         fetchAllSavedProducts: async (parent: any, args: any, context: any, info: any) => {
-            console.log('context ==>', context.user_id);
-            const user: any = await RegisteredUserModel.findById(context.user_id);
+            const { user_id } = info.session.req;
+
+            const user: any = await RegisteredUserModel.findById(user_id);
             if (user) {
                 return {
                     __typename: 'ProductDetailsResponse',
