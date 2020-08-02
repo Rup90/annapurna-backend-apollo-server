@@ -16,7 +16,7 @@ export default {
             const item = {
                 itemName: itemName,
                 category: category,
-                id: productId,
+                productId: productId,
                 quantity: quantity,
                 pricePerKg: pricePerKg,
                 pickupDate: pickupDate,
@@ -58,7 +58,6 @@ export default {
                 itemName, category, pricePerKg, location, id, 
                 productId, quantity, pickupDate, pickupTime, adminComment
             } = args.itemDetails;
-            console.log(adminComment);
             // await RegisteredUserModel.findOneAndUpdate({_id: ctx.user_id, itemsAdded: {$elemMatch: {itemName: itemName}}},
             //     {$set: {'itemsAdded.$.quantity': quantity,
             //             'itemsAdded.$.pricePerKg': pricePerKg,
@@ -91,12 +90,12 @@ export default {
 
         deletetProduct: async (parent: any, args: any, context: any, info: any) => {
             try {
-
-                const user: any = await RegisteredUserModel.updateOne({ _id: context.user_id }, { $pull: { itemsAdded: { productId: args.itemDetails.productId } }}, 
+                const { user_id } = info.session.req;
+                console.log(args.itemDetails.productId);
+                const user: any = await RegisteredUserModel.updateOne({ _id: user_id }, { $pull: { itemsAdded: { productId: args.itemDetails.productId } }}, 
                 { safe: true, multi:true }, function(err, obj) {
                     //do something smart
                 });
-                console.log(user);
                 return {
                         __typename: 'DeleteResponse',
                         statusCode: 200,

@@ -29,6 +29,7 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "graphql-subscriptions": "^1.1.0",
+    "graphql-upload": "^11.0.0",
     "http": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.26",
