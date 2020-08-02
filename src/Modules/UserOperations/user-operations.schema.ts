@@ -7,6 +7,10 @@ const typeDefs = gql`
         deletetProduct(itemDetails: DeleteItemDetails): DeleteResponse!
     }
 
+    extend type Query {
+        fetchAllSavedProducts: ProductDetailsResponse!
+    }
+
     input ItemDetails {
         itemName: String
         category: String
@@ -62,6 +66,27 @@ const typeDefs = gql`
     type DeleteResponse {
         statusCode: Int!
         response: String
+    }
+
+    type ProductDetailsResponse {
+        statusCode: Int!
+        products: [ProductLists!]
+    }
+
+    type ProductLists {
+        
+        itemName: String
+        category: String
+        id: String
+        quantity: String
+        pricePerKg: String
+        pickupDate: String
+        location: String
+        pickupTime: String
+        pickupStatus: String
+        productId: String
+        userComment: String
+        adminComment: String
     }
 
 `;

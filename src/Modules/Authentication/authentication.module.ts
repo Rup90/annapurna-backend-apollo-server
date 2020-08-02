@@ -37,6 +37,7 @@ export const AuthenticationModule = new GraphQLModule({
   resolversComposition: {
 
     'Mutation.saveProduct': [isAuthenticated()],
+    'Query.fetchAllSavedProducts': [isAuthenticated()]
 
   },
 

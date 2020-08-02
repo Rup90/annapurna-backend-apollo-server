@@ -122,5 +122,26 @@ export default {
             return asyncIterator;
           }
         }
-      }
+    },
+
+    Query: {
+
+        fetchAllSavedProducts: async (parent: any, args: any, context: any, info: any) => {
+            console.log('context ==>', context.user_id);
+            const user: any = await RegisteredUserModel.findById(context.user_id);
+            if (user) {
+                return {
+                    __typename: 'ProductDetailsResponse',
+                    statusCode: 200,
+                    products: user['itemsAdded']
+                }
+            } else {
+                return {
+                    __typename: 'ProductDetailsResponse',
+                    statusCode: 200,
+                    products: []
+                }
+            }
+        }
+    }
 }
