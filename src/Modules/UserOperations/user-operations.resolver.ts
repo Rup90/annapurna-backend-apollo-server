@@ -2,7 +2,7 @@ import RegisteredUserModel from '../../Models/RegisteredUsers/RegisteredUsers.mo
 import authGuard from '../../middleware/authGuard';
 import { PubSub } from 'graphql-subscriptions';
 import {NotificationType} from '../../contants/constants';
-import FarmarAddedItemListsModel from '../../Models/AdminApprovalProducts/Admin-approval-item.model';
+import FarmarAddedItemListsModel from '../../Models/UserAddedProducts/UserAddedProducts.model';
 const pubsub = new PubSub();
 export default {
     Mutation: {
@@ -58,29 +58,36 @@ export default {
                 itemName, category, pricePerKg, location, id, 
                 productId, quantity, pickupDate, pickupTime, adminComment
             } = args.itemDetails;
-            // await RegisteredUserModel.findOneAndUpdate({_id: ctx.user_id, itemsAdded: {$elemMatch: {itemName: itemName}}},
-            //     {$set: {'itemsAdded.$.quantity': quantity,
-            //             'itemsAdded.$.pricePerKg': pricePerKg,
-            //             'itemsAdded.$.pickupDate': pickupDate,
-            //             'itemsAdded.$.pickupTime': pickupTime,
-            //             'itemsAdded.$.location': location,
-            //             'itemsAdded.$.adminComment': args.userInput?.adminComment,
-            //             'itemsAdded.$.userComment': args.userInput?.userComment
-            //         }}, {
-            //                 new: true,
-            //                 upsert: true,
-            //                 rawResult: true
-            //               });
-            // const filter = {
-            //     u_id: ctx.user_id,
-            //     itemId: itemInput.id
-            // };
-            // await FarmarAddedItemLists.findOneAndUpdate(filter, {
-            //     $set: {
-            //         userComment: itemInput?.userComment
-            //     }
-            // });
-            // const user = await RegisteredUserModel.findById(ctx.user_id);
+            const { user_id } = info.session.req;
+            await RegisteredUserModel.findOneAndUpdate({_id: user_id, itemsAdded: {$elemMatch: {itemName: itemName}}},
+                {$set: {'itemsAdded.$.quantity': quantity,
+                        'itemsAdded.$.pricePerKg': pricePerKg,
+                        'itemsAdded.$.pickupDate': pickupDate,
+                        'itemsAdded.$.pickupTime': pickupTime,
+                        'itemsAdded.$.location': location,
+                        'itemsAdded.$.adminComment': args.itemDetails?.adminComment,
+                        'itemsAdded.$.userComment': args.itemDetails?.userComment
+                    }}, {
+                            new: true,
+                            upsert: true,
+                            rawResult: true
+                          });
+            const filter = {
+                u_id: user_id,
+                productId: productId
+            };
+            console.log(filter);
+            await FarmarAddedItemListsModel.findOneAndUpdate(filter, {
+                $set: {
+                    userComment: args.itemDetails?.userComment,
+                    quantity: quantity,
+                    pricePerKg: pricePerKg,
+                    pickupDate: pickupDate,
+                    pickupTime: pickupTime,
+                    location: location
+                }
+            });
+            const user = await RegisteredUserModel.findById(user_id);
             return {
                 __typename: 'UpdateResponse',
                 statusCode: 200,

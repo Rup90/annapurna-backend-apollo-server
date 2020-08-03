@@ -3,7 +3,7 @@ import { gql } from 'apollo-server';
 const typedefs = gql`
     
     extend type Query {
-        userAddedProducts(filterdBy: String!): UserAddedProductsDetails
+        userAddedProducts(filteredBy: String!): UserAddedProductsDetails
     }
 
     type UserAddedProductsDetails {
@@ -34,6 +34,7 @@ const typedefs = gql`
         adminOperations(inputParams: AdminOperationInput!): AdminOperationResponse!
         addNewProduct(inputParams: NewProductAddParam!, image: Upload!): NewProductAddedResponse!
         updateAddedProduct(inputParams: NewProductAddParam!, image: Upload!): NewProductAddedResponse!
+        deleteProduct(itemName: String! ): ProductDeletedResponse!
     }
 
     input AdminOperationInput {
@@ -56,6 +57,11 @@ const typedefs = gql`
     type NewProductAddedResponse {
         statusCode: Int!
         itemName: String!
+        message: String!
+    }
+
+    type ProductDeletedResponse {
+        statusCode: Int!
         message: String!
     }
     

@@ -7,7 +7,7 @@ import ItemLists from '../../Models/Products/ItemLists.model';
 export default {
     Query: {
         userAddedProducts: async (parent: any, args: any, context: any, info: any) => {
-            const filter = args.filterdBy;
+            const filter = args.filteredBy;
             const allItems = await FarmarAddedItemLists.find().where('pickupStatus').equals(filter);
             if (allItems.length > 0) {
                 return await {
@@ -39,7 +39,7 @@ export default {
                 }
             });
 
-            await RegisteredUserModel.findOneAndUpdate({_id: u_id, itemsAdded: {$elemMatch: {id: productId}}},
+            await RegisteredUserModel.findOneAndUpdate({_id: u_id, itemsAdded: {$elemMatch: {productId: productId}}},
             {$set: {'itemsAdded.$.pickupStatus': pickupStatus,
                 'itemsAdded.$.adminComment': adminComment
             }}, {
@@ -85,7 +85,7 @@ export default {
 
         updateAddedProduct: async (parent: any, args: any, context: any, info: any) => {
             const { filename, mimetype, createReadStream } = await args.image;
-            const { itemName, category } = args.inputParams;
+            const { itemName } = args.inputParams;
             const path = __dirname + `/../../images/products/${filename}`;
             const userImagePath = `images/products/${filename}`;
             const file = createReadStream().pipe(createWriteStream(path));
@@ -98,6 +98,15 @@ export default {
                 __typename: 'NewProductAddedResponse',
                 statusCode: 200,
                 message: 'Item added Successfully'
+            }
+        },
+
+        deleteProduct: async (parent: any, args: any, context: any, info: any) => {
+            await ItemLists.deleteOne({ itemName: args.itemName });
+            return {
+                __typename: 'ProductDeletedResponse',
+                statusCode: 200,
+                message: 'Item deleted Successfully'
             }
         }
     }
