@@ -36,7 +36,7 @@ const typeDefs = gql`
         user_firstName: String
         user_lastName: String
         user_id: String
-        id: String
+        productId: String
     }
 
      input UpdateItemDetails {
