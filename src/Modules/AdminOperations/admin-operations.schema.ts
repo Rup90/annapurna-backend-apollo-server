@@ -28,6 +28,38 @@ const typedefs = gql`
         user_lastName: String
         productId: String
     }
+
+
+    extend type Mutation {
+        adminOperations(inputParams: AdminOperationInput!): AdminOperationResponse!
+        addNewProduct(inputParams: NewProductAddParam!, image: Upload!): NewProductAddedResponse!
+        updateAddedProduct(inputParams: NewProductAddParam!, image: Upload!): NewProductAddedResponse!
+    }
+
+    input AdminOperationInput {
+        pickupStatus: String
+        u_id: String
+        productId: String
+        adminComment: String
+    }
+
+    type AdminOperationResponse {
+        statusCode: Int!
+        message: String!
+    }
+
+    input NewProductAddParam {
+        itemName: String
+        category: String
+    }
+
+    type NewProductAddedResponse {
+        statusCode: Int!
+        itemName: String!
+        message: String!
+    }
+    
+
 `;
 
 export default typedefs;

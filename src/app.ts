@@ -23,6 +23,7 @@ import { RegistrationModule } from './Modules/Registration/registration.module';
 import { CommonOperationModule } from './Modules/CommonOperations/common-operations.module';
 
 import { AdminOperationModule } from './Modules/AdminOperations/admin-operations.module';
+
 import { AuthenticationModule } from './Modules/Authentication/authentication.module';
 
 
@@ -31,6 +32,7 @@ import consola from 'consola';
 import  logger  from './utils/logger';
 const isAuth = require('./middleware/authenticationGuard');
 const config = require('./config');
+const path = require('path');
 
 
   // initialize the app
@@ -82,6 +84,8 @@ const config = require('./config');
   app.use('*', cors());
 
   app.use(compression());
+
+  app.use('/images', express.static(path.join(__dirname, './images')));
 
   server.applyMiddleware({ app, path: '/graphql' });
 
