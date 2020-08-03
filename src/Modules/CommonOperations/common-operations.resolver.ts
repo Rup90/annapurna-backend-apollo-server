@@ -39,12 +39,22 @@ export default {
                     products: []
                 }
             }
+        },
+
+        getUserInfo: async(parent: any, args: any, context: any, info: any) => {
+            
+            const { user_id } = info.session.req;
+            const user = await RegisteredUsers.findById(user_id);
+            return {
+                __typename: 'UserInformationsResponse',
+                statusCode: 200,
+                userInfo: user
+            }
         }
     },
 
     Mutation: {
         addAvatarImage: async (parent: any, { name, file }: any, context: any) => {
-            console.log('name ==>', name);
             const { filename, mimetype, createReadStream } = await file;
             const path = __dirname + `/../images/avatar/${filename}`;
             const userImagePath = `images/avatar/${filename}`;
@@ -68,6 +78,26 @@ export default {
                 __typename: 'AvatarUploadResponse',
                 ...response
             };
+        },
+
+        updateUserInfo: async (parent: any, args: any, context: any) => {
+            const { email, firstName, lastName, phoneNumber, address, role} = args.userInput;
+            const filter = {email: email};
+            const updatedInfo = {
+                firstName: firstName,
+                lastName: lastName,
+                phoneNumber: phoneNumber,
+                address: address,
+                role: role
+            };
+            const user = await RegisteredUsers.findOneAndUpdate(filter, updatedInfo, {
+                new: true
+            });
+            return {
+                __typename: 'UserInformationsResponse',
+                statusCode: 200,
+                userInfo: user
+            }
         }
     }
 }

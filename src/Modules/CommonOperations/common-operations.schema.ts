@@ -5,6 +5,7 @@ const typedefs = gql`
     extend type Query {
         fetchProductCategories: ProductCategoryLists
         fetchAllProducts: ProductDetails
+        getUserInfo: UserInformationsResponse
     }
 
     type ProductCategoryLists {
@@ -29,15 +30,41 @@ const typedefs = gql`
         id: String
     }
 
+    type UserInformationsResponse {
+        statusCode: Int
+        userInfo: UserInformations
+    }
+
+    type UserInformations {
+        id: String
+        firstName: String
+        lastName: String
+        email: String
+        phoneNumber: String
+        address: String
+        role: String
+        avatar: String
+    }
+
     scalar Upload
 
     extend type Mutation {
         addAvatarImage(name: String!, file: Upload!): AvatarUploadResponse
+        updateUserInfo(userInput: UserInfo): UserInformationsResponse
     }
 
     type AvatarUploadResponse {
         statusCode: Int
         avatar: String
+    }
+
+    input UserInfo {
+        firstName: String
+        lastName: String
+        email: String
+        phoneNumber: String
+        address: String
+        role: String
     }
 `;
 
