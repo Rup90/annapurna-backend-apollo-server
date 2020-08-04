@@ -20,8 +20,6 @@ import { LoginModule } from './Modules/Login/login.module';
 
 import { RegistrationModule } from './Modules/Registration/registration.module';
 
-import { CommonOperationModule } from './Modules/CommonOperations/common-operations.module';
-
 import { AdminOperationModule } from './Modules/AdminOperations/admin-operations.module';
 
 import { AuthenticationModule } from './Modules/Authentication/authentication.module';
@@ -51,8 +49,6 @@ const path = require('path');
       LoginModule,
 
       RegistrationModule,
-
-      CommonOperationModule,
 
       AdminOperationModule,
 

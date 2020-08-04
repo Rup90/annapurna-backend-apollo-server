@@ -2,6 +2,7 @@
 import Constants from '../../contants/constants';
 import ItemLists from '../../Models/Products/ItemLists.model';
 import RegisteredUsers from '../../Models/RegisteredUsers/RegisteredUsers.model';
+import { createWriteStream } from 'fs';
 export default {
 
     Query: {
@@ -54,18 +55,14 @@ export default {
     },
 
     Mutation: {
-        addAvatarImage: async (parent: any, { name, file }: any, context: any) => {
+        addAvatarImage: async (parent: any, { file }: any, context: any, info: any) => {
             const { filename, mimetype, createReadStream } = await file;
-            const path = __dirname + `/../images/avatar/${filename}`;
+            const path = __dirname + `/../../images/avatar/${filename}`;
             const userImagePath = `images/avatar/${filename}`;
-            const stream = createReadStream();
-            const uid = { _id: context.user_id };
-            const response = {
-                statusCode: 200,
-                avatar: ''
-            }
-            console.log('userImagePath ==>', userImagePath);
-            // await RegisteredUsers.findOneAndUpdate(uid, {avatar: userImagePath}, {
+            const stream = createReadStream().pipe(createWriteStream(path));
+            const { user_id } = info.session.req;
+            console.log('userImagePath ==>', userImagePath, user_id);
+            // await RegisteredUsers.findOneAndUpdate(user_id, {avatar: userImagePath}, {
             //     new: true
             // }, (err, res)  => {
             //     if (err) {
@@ -74,9 +71,16 @@ export default {
             //         response.avatar = userImagePath;
             //     }
             // });
+
+            await RegisteredUsers.find().where('_id').equals(user_id)
+                    .update({$set: {
+                        avatar: userImagePath
+                    }
+            });
             return {
                 __typename: 'AvatarUploadResponse',
-                ...response
+                statusCode: 200,
+                avatar: userImagePath
             };
         },
 

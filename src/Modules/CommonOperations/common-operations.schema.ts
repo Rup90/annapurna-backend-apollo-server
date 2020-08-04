@@ -49,7 +49,7 @@ const typedefs = gql`
     scalar Upload
 
     extend type Mutation {
-        addAvatarImage(name: String!, file: Upload!): AvatarUploadResponse
+        addAvatarImage(file: Upload!): AvatarUploadResponse
         updateUserInfo(userInput: UserInfo): UserInformationsResponse
     }
 

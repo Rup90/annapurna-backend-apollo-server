@@ -2,6 +2,8 @@ import { GraphQLModule } from '@graphql-modules/core';
 
 import { UserOperationModule } from '../UserOperations/user-operations.module';
 
+import { CommonOperationModule } from '../CommonOperations/common-operations.module';
+
 import consola from 'consola';
 
  
@@ -37,13 +39,16 @@ export const AuthenticationModule = new GraphQLModule({
   resolversComposition: {
 
     'Mutation.saveProduct': [isAuthenticated()],
-    'Query.fetchAllSavedProducts': [isAuthenticated()]
+    'Query.fetchAllSavedProducts': [isAuthenticated()],
+    'Mutation.addAvatarImage': [isAuthenticated()]
 
   },
 
   imports: [
 
-    UserOperationModule
+    UserOperationModule,
+
+    CommonOperationModule
 
   ],
 
