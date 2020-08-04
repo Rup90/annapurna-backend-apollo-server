@@ -16,6 +16,7 @@ import { registerValidate } from '../../validators/user';
 
 import consola from 'consola';
 import Constants from '../../contants/constants';
+import { sendConfirmationEmail } from '../../utils/sendEmail';
 
  
 const generateToken = async (user: typeof RegistrationSuccessResponse) => {    
@@ -150,6 +151,7 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
                 const tokens = generateToken(response);
 
+                const mailConfirmation = await sendConfirmationEmail(email, role);
                 // return success response
 
                 return {
@@ -160,17 +162,19 @@ const generateToken = async (user: typeof RegistrationSuccessResponse) => {
 
                     response: {
 
-                        userId: response._id,
+                        // userId: response._id,
 
-                        firstName: response.firstName,
+                        // firstName: response.firstName,
 
-                        lastName: response.lastName,
+                        // lastName: response.lastName,
 
-                        role: response.role,
+                        // role: response.role,
 
                         token: (await tokens).token,
 
-                        refreshToken: (await tokens).refreshToken
+                        refreshToken: (await tokens).refreshToken,
+
+                        mailInfo: mailConfirmation
 
                     }
 

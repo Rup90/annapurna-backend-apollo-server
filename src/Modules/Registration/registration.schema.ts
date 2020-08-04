@@ -32,17 +32,11 @@ const typeDefs = gql`
 
     type RegistrationSuccessRes {
 
-        userId: String!
-
-        firstName: String!
-
-        lastName: String!
-
-        role: String!
-
         token: String!
 
         refreshToken: String!
+
+        mailInfo: String
 
     }
 
