@@ -24,10 +24,15 @@ import { AdminOperationModule } from './Modules/AdminOperations/admin-operations
 
 import { AuthenticationModule } from './Modules/Authentication/authentication.module';
 
+import { RestApiOperationModule } from './Modules/RestApiActions/rest-api-actions.module';
+
+import { DummyRestAPI } from './Modules/RestApiActions/rest-api-actions-datasource';
 
 import consola from 'consola';
 
 import  logger  from './utils/logger';
+
+
 const isAuth = require('./middleware/authenticationGuard');
 const config = require('./config');
 const path = require('path');
@@ -42,6 +47,8 @@ const path = require('path');
 
   // starting apollo-express-server
 
+  // const dummyRest = new DummyRestAPI();
+
   const server = new ApolloServer({
 
     modules: [
@@ -52,10 +59,15 @@ const path = require('path');
 
       AdminOperationModule,
 
-      AuthenticationModule
+      AuthenticationModule,
+
+      RestApiOperationModule
 
     ],
 
+    // dataSources: () => ({
+    //     dummyApi: new DummyRestAPI()
+    // }),
     context: ({ req, res }) => ({ req, res }),
 
     validationRules: [depthLimit(7)],

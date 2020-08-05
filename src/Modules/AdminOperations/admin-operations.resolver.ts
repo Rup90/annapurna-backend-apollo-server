@@ -4,6 +4,7 @@ import RegisteredUserModel from '../../Models/RegisteredUsers/RegisteredUsers.mo
 import { ValidationError } from '../../contants/constants';
 import { createWriteStream } from 'fs';
 import ItemLists from '../../Models/Products/ItemLists.model';
+import NotificationsModel from '../../Models/Notifications/Notification.model';
 export default {
     Query: {
         userAddedProducts: async (parent: any, args: any, context: any, info: any) => {
@@ -20,6 +21,23 @@ export default {
                     __typename: 'UserAddedProductsDetails',
                     statusCode: 200,
                     products: []
+                }
+            }
+        },
+
+        fetchNotifications: async (parent: any, args: any, context: any, info: any) => {
+            const allNotifications = await NotificationsModel.find();
+            if (allNotifications.length > 0) {
+                return await {
+                    __typename: 'NotificationDetails',
+                    statusCode: 200,
+                    notifications: allNotifications
+                }
+            } else {
+                return await {
+                    __typename: 'NotificationDetails',
+                    statusCode: 200,
+                    notifications: []
                 }
             }
         }

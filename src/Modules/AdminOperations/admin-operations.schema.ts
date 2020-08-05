@@ -4,6 +4,7 @@ const typedefs = gql`
     
     extend type Query {
         userAddedProducts(filteredBy: String!): UserAddedProductsDetails
+        fetchNotifications: NotificationDetails
     }
 
     type UserAddedProductsDetails {
@@ -63,6 +64,19 @@ const typedefs = gql`
     type ProductDeletedResponse {
         statusCode: Int!
         message: String!
+    }
+
+    type NotificationDetails {
+        statusCode: Int
+        notifications: [NotificationObj!]
+    }
+
+    type NotificationObj {
+        itemName: String
+        user_id: String
+        user_firstName: String
+        user_lastName: String
+        productId: String
     }
     
 

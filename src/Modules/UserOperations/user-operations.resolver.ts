@@ -3,6 +3,7 @@ import authGuard from '../../middleware/authGuard';
 import { PubSub } from 'graphql-subscriptions';
 import {NotificationType} from '../../contants/constants';
 import FarmarAddedItemListsModel from '../../Models/UserAddedProducts/UserAddedProducts.model';
+import NotificationModel from '../../Models/Notifications/Notification.model';
 const pubsub = new PubSub();
 export default {
     Mutation: {
@@ -45,6 +46,9 @@ export default {
             };
             const farmerItem = new FarmarAddedItemListsModel(notficationPaylod);
             farmerItem.save();
+
+            const notification = new NotificationModel(notificationPayload);
+            notification.save();
             pubsub.publish(NotificationType.AddItems, { itemAdded: notificationPayload });
             return {
                 __typename: 'ProductSaveResponse',
