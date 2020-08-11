@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 
 const typeDefs = gql`
     extend type Query {
-        users: UserDetails
+        users: [UserDetails]
     }
 
     type UserDetails {

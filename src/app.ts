@@ -32,6 +32,9 @@ import consola from 'consola';
 
 import  logger  from './utils/logger';
 
+import CustomError from './utils/custom-error-handler';
+import customErrorHandler from './utils/custom-error-handler';
+import { formatError } from 'graphql';
 
 const isAuth = require('./middleware/authenticationGuard');
 const config = require('./config');
@@ -49,6 +52,7 @@ const path = require('path');
 
   // const dummyRest = new DummyRestAPI();
 
+
   const server = new ApolloServer({
 
     modules: [
@@ -65,9 +69,10 @@ const path = require('path');
 
     ],
 
-    // dataSources: () => ({
-    //     dummyApi: new DummyRestAPI()
-    // }),
+    dataSources: () => ({
+        dummyApi: new DummyRestAPI()
+    }),
+    
     context: ({ req, res }) => ({ req, res }),
 
     validationRules: [depthLimit(7)],
@@ -85,7 +90,21 @@ const path = require('path');
     uploads: {
       maxFileSize: 10000000, // 10 MB
       maxFiles: 20
-    }
+    },
+
+    // formatError: (err: any) => {
+    //   // Don't give the specific errors to the client.
+    //   // if (err.message.startsWith("You are: ")) {
+    //   //   return new Error('Internal server error');
+    //   // }
+      
+    //   // const error = customErrorHandler(err.extensions);
+    //   const test = {};
+    //   console.log('error ==>', err);
+    //   // Otherwise return the original error.  The error can also
+    //   // be manipulated in other ways, so long as it's returned.
+    //   return test;
+    // }
 
   });
 
